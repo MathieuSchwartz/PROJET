@@ -23,7 +23,8 @@ int main() {
      //test pour voir si les fonctions marchent  (version pas finale)
     char symbolejoueurjaune = 'X';      //le joueur jaune sera le joueur 1
     char symbolejoueurrouge = 'O';      //le joueur rouge sera le joueur 2
-    positionner_jeton(grille, grillepuissanceN, symbolejoueurjaune);
+    /*
+     positionner_jeton(grille, grillepuissanceN, symbolejoueurjaune);
     afficher_grille(grille, grillepuissanceN);
     positionner_jeton(grille, grillepuissanceN, symbolejoueurrouge);
     afficher_grille(grille, grillepuissanceN);
@@ -31,6 +32,9 @@ int main() {
     afficher_grille(grille, grillepuissanceN);
     retirer_jeton(grille, grillepuissanceN, symbolejoueurrouge);
     afficher_grille(grille, grillepuissanceN);
+    */
+
+   tour(joueur1or2,grillepuissanceN, grille);
 
     return 0;
 }

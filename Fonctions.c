@@ -105,78 +105,70 @@ int retirer_jeton(grid grille, char grillepuissanceN[50][50], char symbole)
 
 int tour(int joueur1or2, char grillepuissanceN[50][50], grid grille){
 
-    int choix=0 ; //choix = 1 --> positionner jeton
-                  //choix = 2 --> retirer jeton
-                  //choix = 3 --> sauvegarder et quitter la partie
-
-
     if (joueur1or2 == 1){
+
         printf("Le joueur 1 commence...\n");
-        char symbole = 'X' ;
-
-        printf(  "\n Rentrer 1 si vous voulez positionner un jeton,"
-                        "\n Rentrer 2 si vous voulez retirer un jeton"
-                        "\n Rentrer 3 si vous voulez sauvegarder la partie et la quitter\n");
-        scanf("%d", &choix);
-
-        if (choix == 1){
-            positionner_jeton(grille,grillepuissanceN, symbole);
-        }else if(choix == 2){
-            retirer_jeton(grille, grillepuissanceN, symbole);
-        }else if (choix == 3){
-            //sauvegarder et quitter la partie (fonction)
-        }
+        tour_joueur1(grille, grillepuissanceN);
 
         printf("C'est au tour du joueur 2...\n");
-        symbole = 'O' ;
-
-        printf(  "\n Rentrer 1 si vous voulez positionner un jeton,"
-                 "\n Rentrer 2 si vous voulez retirer un jeton"
-                 "\n Rentrer 3 si vous voulez sauvegarder la partie et la quitter\n");
-        scanf("%d", &choix);
-
-        if (choix == 1){
-            positionner_jeton(grille,grillepuissanceN, symbole);
-        }else if(choix == 2){
-            retirer_jeton(grille, grillepuissanceN, symbole);
-        }else if (choix == 3){
-            //sauvegarder et quitter la partie (fonction)
-        }
+        tour_joueur2(grille,grillepuissanceN);
 
     }else if (joueur1or2 == 2){
+
         printf("Le joueur 2 commence...\n");
-        char symbole = 'O' ;
-
-        printf(  "\n Rentrer 1 si vous voulez positionner un jeton,"
-                 "\n Rentrer 2 si vous voulez retirer un jeton"
-                 "\n Rentrer 3 si vous voulez sauvegarder la partie et la quitter\n");
-        scanf("%d", &choix);
-
-        if (choix == 1){
-            positionner_jeton(grille,grillepuissanceN, symbole);
-        }else if(choix == 2){
-            retirer_jeton(grille, grillepuissanceN, symbole);
-        }else if (choix == 3){
-            //sauvegarder et quitter la partie (fonction)
-        }
+        tour_joueur2(grille, grillepuissanceN);
 
         printf("C'est au tour du joueur 1...\n");
-        symbole = 'X' ;
-
-        printf(  "\n Rentrer 1 si vous voulez positionner un jeton,"
-                 "\n Rentrer 2 si vous voulez retirer un jeton"
-                 "\n Rentrer 3 si vous voulez sauvegarder la partie et la quitter\n");
-        scanf("%d", &choix);
-
-        if (choix == 1){
-            positionner_jeton(grille,grillepuissanceN, symbole);
-        }else if(choix == 2){
-            retirer_jeton(grille, grillepuissanceN, symbole);
-        }else if (choix == 3){
-            //sauvegarder et quitter la partie (fonction)
-        }
+        tour_joueur1(grille, grillepuissanceN);
 
     }
 
 }
 
+int tour_joueur1(grid grille, char grillepuissanceN[50][50]){
+
+    char symbole = 'X' ;
+    int choix=0 ;   //choix = 1 --> positionner jeton
+                    //choix = 2 --> retirer jeton
+                    //choix = 3 --> sauvegarder et quitter la partie
+
+    printf(  "\n Rentrer 1 si vous voulez positionner un jeton,"
+             "\n Rentrer 2 si vous voulez retirer un jeton"
+             "\n Rentrer 3 si vous voulez sauvegarder la partie et la quitter\n");
+    scanf("%d", &choix);
+
+    if (choix == 1){
+        positionner_jeton(grille,grillepuissanceN, symbole);
+        afficher_grille(grille, grillepuissanceN);
+    }else if(choix == 2){
+        retirer_jeton(grille, grillepuissanceN, symbole);
+        afficher_grille(grille, grillepuissanceN);
+    }else if (choix == 3){
+        //sauvegarder et quitter la partie (fonction)
+    }
+
+}
+
+int tour_joueur2(grid grille, char grillepuissanceN[50][50]){
+
+    char symbole = 'O' ;
+    int choix=0 ;   //choix = 1 --> positionner jeton
+                    //choix = 2 --> retirer jeton
+                    //choix = 3 --> sauvegarder et quitter la partie
+
+    printf(  "\n Rentrer 1 si vous voulez positionner un jeton,"
+             "\n Rentrer 2 si vous voulez retirer un jeton"
+             "\n Rentrer 3 si vous voulez sauvegarder la partie et la quitter\n");
+    scanf("%d", &choix);
+
+    if (choix == 1){
+        positionner_jeton(grille,grillepuissanceN, symbole);
+        afficher_grille(grille, grillepuissanceN);
+    }else if(choix == 2){
+        retirer_jeton(grille, grillepuissanceN, symbole);
+        afficher_grille(grille, grillepuissanceN);
+    }else if (choix == 3){
+        //sauvegarder et quitter la partie (fonction)
+    }
+
+}

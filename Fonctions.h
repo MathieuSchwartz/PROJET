@@ -41,4 +41,8 @@ int retirer_jeton(grid grille, char grillepuissanceN[50][50], char symbole);    
  */
 int tour(int joueur1or2, char grillepuissanceN[50][50], grid grille);
 
+int tour_joueur1(grid grille, char grillepuissanceN[50][50]);
+
+int tour_joueur2(grid grille, char grillepuissanceN[50][50]);
+
 #endif //PROJET_FONCTIONS_H
