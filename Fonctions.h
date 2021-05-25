@@ -29,20 +29,20 @@ void afficher_grille(grid grille, char grillepuissanceN[50][50]);        //secti
 /*
  * Permet de positionner le jeton en prenant en paramètre le symbole du joueur
  */
-int positionner_jeton(grid grille, char grillepuissanceN[50][50], char symbole);  //section2
+int positionner_jeton(grid grille, char grillepuissanceN[50][50], char symbole, int * colonne_bloquee);  //section2
 
 /*
  * Permet de retirer le jeton en prenant en paramètre le symbole du joueur
  */
-int retirer_jeton(grid grille, char grillepuissanceN[50][50], char symbole);     //section2
+int retirer_jeton(grid grille, char grillepuissanceN[50][50], char symbole, int * colonne_bloquee);     //section2
 
 /*
  * Joue un tour classique, les deux joueurs jouent une fois
  */
-int tour(int joueur1or2, char grillepuissanceN[50][50], grid grille);
+void tour(int joueur1or2, char grillepuissanceN[50][50], grid grille, int * colonne_bloquee);
 
-int tour_joueur1(grid grille, char grillepuissanceN[50][50]);
+void tour_joueur1(grid grille, char grillepuissanceN[50][50], int * colonne_bloquee);
 
-int tour_joueur2(grid grille, char grillepuissanceN[50][50]);
+void tour_joueur2(grid grille, char grillepuissanceN[50][50], int * colonne_bloquee);
 
 #endif //PROJET_FONCTIONS_H
