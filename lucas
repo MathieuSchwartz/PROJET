@@ -1,0 +1,163 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <string.h>
+
+typedef struct {
+
+    int hauteur;
+    int largeur;
+    int N;
+
+} grid;
+
+/*
+ * Demande aux joueurs le nombre de jetons à aligner afin de déterminer les dim. de la grille
+ */
+grid def_grille(grid grille);       //section 1
+
+void initialisation_grille(grid grille, char grillepuissanceN[50][50]);  //section1  (1 section
+                                                                        // correspond à une bibliothèque)
+/*
+ * affiche la grille de jeu en cours
+ */
+void afficher_grille(grid grille, char grillepuissanceN[50][50]);        //section 1
+
+/*
+ * Permet de positionner le jeton en prenant en paramètre le symbole du joueur
+ */
+int positionner_jeton(grid grille, char grillepuissanceN[50][50], char symbole, int * colonne_bloquee);  //section2
+
+/*
+ * Permet de retirer le jeton en prenant en paramètre le symbole du joueur
+ */
+int retirer_jeton(grid grille, char grillepuissanceN[50][50], char symbole, int * colonne_bloquee);     //section2
+
+int main() {
+
+    grid grille;
+    grille = def_grille(grille);
+    char grillepuissanceN[50][50];
+    initialisation_grille(grille, grillepuissanceN);
+    afficher_grille(grille, grillepuissanceN);
+
+    int joueur1or2;
+    srand(time(0));
+    joueur1or2 = rand()% 2 + 1;    //si '1' est tiré alors le joueur jaune commence,
+                                    //si '2' est tiré alors le joueur rouge commence
+
+    int colonne_bloquee; //la colonne bloquee n'as aucun impacte sur la grille de jeu
+    colonne_bloquee = grille.largeur+1;
+
+     //test pour voir si les fonctions marchent  (version pas finale)
+    char symbolejoueurjaune = 'X';
+    char symbolejoueurrouge = 'O';
+    positionner_jeton(grille, grillepuissanceN, symbolejoueurjaune, &colonne_bloquee);
+    afficher_grille(grille, grillepuissanceN);
+    positionner_jeton(grille, grillepuissanceN, symbolejoueurrouge, &colonne_bloquee);
+    afficher_grille(grille, grillepuissanceN);
+    retirer_jeton(grille, grillepuissanceN, symbolejoueurjaune, &colonne_bloquee);
+    afficher_grille(grille, grillepuissanceN);
+    retirer_jeton(grille, grillepuissanceN, symbolejoueurrouge, &colonne_bloquee);
+    afficher_grille(grille, grillepuissanceN);
+    positionner_jeton(grille, grillepuissanceN, symbolejoueurjaune, &colonne_bloquee);
+    afficher_grille(grille, grillepuissanceN);
+
+    return 0;
+}
+
+grid def_grille(grid grille)
+{
+    do {
+        printf("Combien de jetons voulez-vous aligner pour gagner ? \n");
+        scanf("%d", &grille.N);
+    } while ( grille.N < 3 || grille.N > 47); //car limite tableau = 50 donc 50-2 = 48
+    grille.hauteur = grille.N + 2;
+    grille.largeur = grille.N + 2;
+    return grille;
+}
+
+void initialisation_grille(grid grille, char grillepuissanceN[50][50])
+{
+    int i;
+    int j;
+    for (i = 0 ; i < grille.hauteur ; i++)
+    {
+        for (j = 0 ; j < grille.largeur ; j++)
+        {
+            grillepuissanceN[j][i] = '_';
+        }
+    }
+}
+
+void afficher_grille(grid grille, char grillepuissanceN[50][50])
+{
+    int i;
+    int j;
+    for (i = 0 ; i < grille.hauteur ; i++)
+    {
+        printf("|");
+        for (j = 0 ; j < grille.largeur ; j++)
+        {
+            printf("  %c  |", grillepuissanceN[j][i]);
+        }
+        printf("\n");
+    }
+}
+
+int positionner_jeton(grid grille, char grillepuissanceN[50][50], char symbole, int * colonne_bloquee)
+{
+    int positionjeton;
+    int action_poser;   //si action_poser == 1 alors l'action peut se faire
+                        //si action_poser == 0 alors l'action ne peut se faire donc on redemande à l'utilisateur
+    int i;
+
+    do {
+            printf("Dans quelle colonne voulez vous déposer votre jeton ?\n");
+            scanf("%d", &positionjeton);
+    } while (positionjeton < 0 || positionjeton > grille.largeur);
+
+        i = grille.hauteur - 1;   //on part du bas du tableau puis on remonte au fur et à mesure que la case ne soit pas remplie
+        action_poser = 1;
+        while (grillepuissanceN[positionjeton - 1][i] != '_' && i > -1) //positionjeton - 1 pour suivre la logique de l'utilisateur
+            {
+                i = i - 1;
+            }
+
+        if (grillepuissanceN[positionjeton - 1][0] != '_' || positionjeton - 1 == *colonne_bloquee){
+            action_poser = 0;
+        } else {
+            grillepuissanceN[positionjeton - 1][i] = symbole;
+        }
+
+    *colonne_bloquee = grille.largeur+1;
+    return action_poser;
+}
+
+int retirer_jeton(grid grille, char grillepuissanceN[50][50], char symbole, int * colonne_bloquee)
+{
+    int positionjeton;
+    int action_retirer;   //si action_retirer == 0 alors on ne peux pas retirer le jeton et on redemande une autre position
+                          //si action_retirer == 1 alors le retirage est effectué
+    int i = 0;
+
+        do {
+            action_retirer = 1;
+            printf("Dans quelle colonne voulez vous retirer votre jeton ?\n");
+            scanf("%d", &positionjeton);
+        } while (positionjeton < 0 || positionjeton > grille.largeur);
+
+
+        while (grillepuissanceN[positionjeton - 1][i] == '_' && i < grille.hauteur) {
+            i = i + 1;
+        }
+
+        if (grillepuissanceN[positionjeton - 1][i] != '_') {
+            grillepuissanceN[positionjeton - 1][i] = '_';
+            *colonne_bloquee = positionjeton - 1;
+        } else {
+            action_retirer = 0;
+        }
+
+    return action_retirer;
+}
