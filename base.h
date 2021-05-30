@@ -1,10 +1,9 @@
 //
-// Created by mathi on 25/05/2021.
+// Created by mathi on 30/05/2021.
 //
 
-#ifndef PROJET_FONCTIONS_H
-#define PROJET_FONCTIONS_H
-
+#ifndef PROJET_BASE_H
+#define PROJET_BASE_H
 
 typedef struct {
 
@@ -15,7 +14,7 @@ typedef struct {
 } grid;
 
 /*
-Demande aux joueurs le nombre de jetons à aligner afin de déterminer les dim. de la grille
+ * Demande aux joueurs le nombre de jetons à aligner afin de déterminer les dim. de la grille
  */
 grid def_grille(grid grille);       //section 1
 
@@ -29,20 +28,20 @@ void afficher_grille(grid grille, char grillepuissanceN[50][50]);        //secti
 /*
  * Permet de positionner le jeton en prenant en paramètre le symbole du joueur
  */
-int positionner_jeton(grid grille, char grillepuissanceN[50][50], char symbole, int * colonne_bloquee);  //section2
+int positionner_jeton(grid grille, char grillepuissanceN[50][50], char symbole, int * colonne_bloquee, int dernierjeton_xy[2]);  //section2
 
 /*
  * Permet de retirer le jeton en prenant en paramètre le symbole du joueur
  */
 int retirer_jeton(grid grille, char grillepuissanceN[50][50], char symbole, int * colonne_bloquee);     //section2
 
-/*
- * Joue un tour classique, les deux joueurs jouent une fois
- */
-void tour(int joueur1or2, char grillepuissanceN[50][50], grid grille, int * colonne_bloquee);
 
-void tour_joueur1(grid grille, char grillepuissanceN[50][50], int * colonne_bloquee);
+int tour_joueur2(grid grille, char grillepuissanceN[50][50],int * colonne_bloquee, int dernierjeton_xy[2]);
 
-void tour_joueur2(grid grille, char grillepuissanceN[50][50], int * colonne_bloquee);
+int tour_joueur1(grid grille, char grillepuissanceN[50][50], int * colonne_bloquee, int dernierjeton_xy[2]);
 
-#endif //PROJET_FONCTIONS_H
+void tour(int joueur1or2, char grillepuissanceN[50][50], grid grille);
+
+int menu();
+
+#ifndef PROJET_BASE_H
