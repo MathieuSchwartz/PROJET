@@ -44,4 +44,4 @@ void tour(int joueur1or2, char grillepuissanceN[50][50], grid grille);
 
 int menu();
 
-#ifndef PROJET_BASE_H
+#endif //PROJET_BASE_H
