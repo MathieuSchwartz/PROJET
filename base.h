@@ -5,6 +5,7 @@
 #ifndef PROJET_BASE_H
 #define PROJET_BASE_H
 
+
 typedef struct {
 
     int hauteur;
@@ -39,6 +40,8 @@ int retirer_jeton(grid grille, char grillepuissanceN[50][50], char symbole, int 
 int tour_joueur2(grid grille, char grillepuissanceN[50][50],int * colonne_bloquee, int dernierjeton_xy[2]);
 
 int tour_joueur1(grid grille, char grillepuissanceN[50][50], int * colonne_bloquee, int dernierjeton_xy[2]);
+
+int tour_ordi(grid grille, char grillepuissanceN[50][50], int * colonne_bloquee, int dernierjeton_xy[2]);
 
 void tour(int joueur1or2, char grillepuissanceN[50][50], grid grille);
 

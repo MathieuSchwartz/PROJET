@@ -19,5 +19,4 @@ int check_egalite(grid grille, char grillepuissanceN[50][50]);
 
 int checkwinner(grid grille, char grillepuissanceN[50][50], char symbole, int dernierjeton_xy[2]); //fonction principale
 
-
 #endif //PROJET_CHECK_WINNER_H

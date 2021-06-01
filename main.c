@@ -18,7 +18,5 @@ int main() {
     joueur1or2 = rand()% 2 + 1;    //si '1' est tiré alors le joueur jaune commence,
     //si '2' est tiré alors le joueur rouge commence
     tour(joueur1or2, grillepuissanceN, grille);
-
-
     return 0;
 }
