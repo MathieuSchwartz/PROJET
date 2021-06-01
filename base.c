@@ -3,7 +3,7 @@
 //
 
 #include "base.h"
-
+#include "save.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -146,6 +146,7 @@ void tour(int joueur1or2, char grillepuissanceN[50][50], grid grille) {
 
 int tour_joueur1(grid grille, char grillepuissanceN[50][50], int *colonne_bloquee, int dernierjeton_xy[2]) {
 
+    int joueur1or2 = 1;
     char symbole = 'X';
     int vainqueur = 0;
     int action_effectuer = 1;   //action_effectuer = 1 --> la boucle ne se répète pas
@@ -171,6 +172,7 @@ int tour_joueur1(grid grille, char grillepuissanceN[50][50], int *colonne_bloque
             return 0;
         } else if (choix == 3) {
             action_effectuer = 1;
+            save(joueur1or2, *colonne_bloquee, grille, grillepuissanceN, "projet.txt");
             return 3;//sauvegarder et quitter la partie (fonction)
         }
     } while (action_effectuer == 0);
@@ -181,6 +183,7 @@ int tour_joueur1(grid grille, char grillepuissanceN[50][50], int *colonne_bloque
 
 int tour_joueur2(grid grille, char grillepuissanceN[50][50], int *colonne_bloquee, int dernierjeton_xy[2]) {
 
+    int joueur1or2 = 2;
     char symbole = 'O';
     int vainqueur = 0;
     int action_effectuer = 1;   //action_effectuer = 1 --> la boucle ne se répète pas
@@ -205,6 +208,7 @@ int tour_joueur2(grid grille, char grillepuissanceN[50][50], int *colonne_bloque
             afficher_grille(grille, grillepuissanceN);
         } else if (choix == 3) {
             action_effectuer = 1;
+            save(joueur1or2, *colonne_bloquee, grille, grillepuissanceN, "projet.txt");
             return 3;//sauvegarder et quitter la partie (fonction)
         }
     } while (action_effectuer == 0);

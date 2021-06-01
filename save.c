@@ -6,26 +6,28 @@
 #include "save.h"
 #include <stdio.h>
 
-void save(char joueur1or2, int colonne_bloquee, grid grille, char grillepuissanceN[50][50],char slot[30]){
+void save(int joueur1or2, int colonne_bloquee, grid grille, char grillepuissanceN[50][50],char slot[30]){
 
     FILE* file= fopen(slot,"w");//Crée un fichier
 
     fprintf(file,"%d\n",grille.largeur);//Erengistre le nombre de case de la grille
-    fprintf(file,"%c\n",joueur1or2);//Enrengistre le tour du joueur
+    fprintf(file,"%d\n",joueur1or2);//Enrengistre le tour du joueur
     fprintf(file,"%d\n",colonne_bloquee);//Enrengistre la colonne interdite
-    for (int i = 0; i < grille.largeur; ++i) {
+    for (int i = 0; i < grille.hauteur; ++i) {
 
         for (int j = 0; j < grille.largeur; ++j) {
 
-            fprintf(file,"%c\n",grillepuissanceN[i][j]); //Enrengistre les valeurs de la grille
+            fprintf(file,"%c",grillepuissanceN[j][i]); //Enrengistre les valeurs de la grille
 
         }
-
+        fprintf(file,"\n");
     }
-
+    fclose(file);
 }
 
-int load(char *joueur1or2,int * colonne_bloquee, grid * grille, char slot[30], char grillepuissanceN[50][50]){
+
+
+int load(int *joueur1or2,int * colonne_bloquee, grid * grille, char slot[30], char grillepuissanceN[50][50]){
 
     FILE* file= fopen(slot, "r");//Ouverture du fichier
 
@@ -33,7 +35,8 @@ int load(char *joueur1or2,int * colonne_bloquee, grid * grille, char slot[30], c
         printf("Fichier inexistant\n"); //Vérifie que le fichier à bien été ouvert
     }else{
 
-        char buffer_string[11];int buffer_int;//Memoire d'un string et d'un integrer
+        char buffer_string[11];
+        int buffer_int;         //Memoire d'un string et d'un integrer
 
         fgets(buffer_string,5,file); //Recuperation de la taille de la grille
         sscanf((const char *) &buffer_string, "%d", &buffer_int);
@@ -57,5 +60,5 @@ int load(char *joueur1or2,int * colonne_bloquee, grid * grille, char slot[30], c
 
         }
     }
-
+    fclose(file);
 }
