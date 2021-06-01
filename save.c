@@ -37,7 +37,9 @@ int load(char *joueur1or2,int * colonne_bloquee, grid * grille, char slot[30], c
 
         fgets(buffer_string,5,file); //Recuperation de la taille de la grille
         sscanf((const char *) &buffer_string, "%d", &buffer_int);
-        initialisation_grille(grille,grillepuissanceN[50][50]);//Creation de la grille
+       //---------------------------------------------------------------------------------
+        initialisation_grille(*grille,grillepuissanceN);//Creation de la grille           //defectueux
+       //---------------------------------------------------------------------------------
 
         fgets(joueur1or2,10,file);//Recuperation du tour de la personne qui doit jouer
 

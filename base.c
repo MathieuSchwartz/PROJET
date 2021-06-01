@@ -3,6 +3,7 @@
 //
 
 #include "base.h"
+#include "save.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -163,6 +164,7 @@ int tour_joueur1(grid grille, char grillepuissanceN[50][50], int *colonne_bloque
             action_effectuer = retirer_jeton(grille, grillepuissanceN, symbole, colonne_bloquee);
             afficher_grille(grille, grillepuissanceN);
         } else if (choix == 3) {
+            save(1, colonne_bloquee, grille, grillepuissanceN,)
             //sauvegarder et quitter la partie (fonction)
         }
     } while (action_effectuer == 0);

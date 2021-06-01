@@ -5,6 +5,9 @@
 #ifndef PROJET_SAVE_H
 #define PROJET_SAVE_H
 
+#include "base.h"
+#include "check_winner.h"
+
 void save(char joueur1or2, int colonne_bloquee, grid grille, char grillepuissanceN[50][50],char slot[30]);
 
 int load(char *joueur1or2,int * colonne_bloquee, grid * grille, char slot[30], char grillepuissanceN[50][50]);
