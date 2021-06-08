@@ -1,11 +1,17 @@
 //
-// Created by mathi on 30/05/2021.
+// Created by Elève on 27/05/2021.
 //
 
 #ifndef PROJET_CHECK_WINNER_H
 #define PROJET_CHECK_WINNER_H
 
 #include "base.h"
+#include "save.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <string.h>
+#include "check_winner.h"
 
 int checkwinner_horizontale(grid grille, char grillepuissanceN[50][50], char symbole, int dernierjeton_xy[2]);
 

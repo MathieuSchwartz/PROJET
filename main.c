@@ -3,20 +3,28 @@
 #include <time.h>
 #include <string.h>
 #include "base.h"
+#include "save.h"
+#include "check_winner.h"
+#include "game.h"
+#include "actions.h"
 
 
 int main() {
 
-    grid grille;
-    grille = def_grille(grille);
-    char grillepuissanceN[50][50];
-    initialisation_grille(grille, grillepuissanceN);
-    afficher_grille(grille, grillepuissanceN);
+    int NB_joueur = 2;
+    int charger_partie;
+    printf("====== Bienvenue dans le jeu puissance N ! ======\n");
 
-    int joueur1or2;
-    srand(time(0));
-    joueur1or2 = rand()% 2 + 1;    //si '1' est tiré alors le joueur jaune commence,
-    //si '2' est tiré alors le joueur rouge commence
-    tour(joueur1or2, grillepuissanceN, grille);
+    grid grille;
+    char grillepuissanceN[50][50];
+
+    menu(&NB_joueur, &charger_partie);
+
+    if (NB_joueur == 2) {
+        tour(grillepuissanceN, grille, charger_partie, NB_joueur);
+    } else if (NB_joueur == 1){
+        tour_avecia(grillepuissanceN, grille, charger_partie, NB_joueur);//tour avec ordi
+    }
+
     return 0;
 }

@@ -1,23 +1,24 @@
 //
-// Created by mathi on 30/05/2021.
+// Created by Elève on 25/05/2021.
 //
 
 #include "base.h"
-#include "save.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
 #include "check_winner.h"
-
-
+#include "save.h"
+#include "actions.h"
 
 
 grid def_grille(grid grille)
 {
     do {
         printf("Combien de jetons voulez-vous aligner pour gagner ? \n");
-        scanf("%d", &grille.N);
+        grille.N = scan_valeur(grille.N);
+        //scanf("%d", &grille.N);
     } while ( grille.N < 3 || grille.N > 47); //car limite tableau = 50 donc 50-2 = 48
     grille.hauteur = grille.N + 2;
     grille.largeur = grille.N + 2;
@@ -52,194 +53,91 @@ void afficher_grille(grid grille, char grillepuissanceN[50][50])
     }
 }
 
-int positionner_jeton(grid grille, char grillepuissanceN[50][50], char symbole, int * colonne_bloquee, int dernierjeton_xy[2])
+int choixjoueur(int joueur1or2)
 {
-    int positionjeton;
-    int action_poser;   //si action_poser == 1 alors l'action peut se faire
-    //si action_poser == 0 alors l'action ne peut se faire donc on redemande à l'utilisateur
-    int i;
+    srand(time(0));
+    joueur1or2 = rand()% 2 + 1;    //si '1' est tiré alors le joueur jaune commence,
+    //si '2' est tiré alors le joueur rouge commence
 
-    do {
-        printf("Dans quelle colonne voulez vous deposer votre jeton ?\n");
-        scanf("%d", &positionjeton);
-    } while (positionjeton < 0 || positionjeton > grille.largeur);
-
-    i = grille.hauteur - 1;   //on part du bas du tableau puis on remonte au fur et à mesure que la case ne soit pas remplie
-    action_poser = 1;
-    while (grillepuissanceN[positionjeton - 1][i] != '_' && i > -1) //positionjeton - 1 pour suivre la logique de l'utilisateur
+    if (joueur1or2 == 1)
     {
-        i = i - 1;
+        printf("Le joueur 1 commence.\n");
+    } else if (joueur1or2 == 2)
+    {
+        printf("Le joueur 2 commence.\n");
     }
 
-    if (grillepuissanceN[positionjeton - 1][0] != '_' || positionjeton - 1 == *colonne_bloquee){
-        action_poser = 0;
-        printf("Vous ne pouvez pas placer un jeton dans cette colonne. Erreur colonne : %d\n", positionjeton);
-    } else {
-        grillepuissanceN[positionjeton - 1][i] = symbole;
-        *colonne_bloquee = grille.largeur+1;
-        dernierjeton_xy[0] = positionjeton - 1;     //prend la valeur de x
-        dernierjeton_xy[1] = i;                     //prend la valeur de y
-    }
-
-    return action_poser;
+    return joueur1or2;
 }
 
-int retirer_jeton(grid grille, char grillepuissanceN[50][50], char symbole, int * colonne_bloquee)
+/**
+ * Permet de savoir si il y a des jetons dans la grille pour permettre l'affichage des différents choix
+ * @param grille
+ * @param grillepuissanceN
+ * @return 1 si il y a déjà des jetons ou 0 si il n'y a pas encore de jetons
+ */
+int jetonsdanslagrille(grid grille, char grillepuissanceN[50][50])
 {
-    int positionjeton;
-    int action_retirer;   //si action_retirer == 0 alors on ne peux pas retirer le jeton
-    //si action_retirer == 1 alors le retirage est effectué
     int i = 0;
 
-    do {
-        action_retirer = 1;
-        printf("Dans quelle colonne voulez vous retirer votre jeton ?\n");
-        scanf("%d", &positionjeton);
-    } while (positionjeton < 0 || positionjeton > grille.largeur);
-
-
-    while (grillepuissanceN[positionjeton - 1][i] != 'X' && grillepuissanceN[positionjeton - 1][i] != 'O'
-           && i < grille.hauteur-1) {
+    while (grillepuissanceN[i][grille.hauteur-1] == '_' && i < grille.largeur)
+    {
         i = i + 1;
     }
 
-    if (grillepuissanceN[positionjeton - 1][i] == 'X' || grillepuissanceN[positionjeton - 1][i] == 'O') {
-        grillepuissanceN[positionjeton - 1][i] = '_';
-        *colonne_bloquee = positionjeton - 1;
-    } else if (grillepuissanceN[positionjeton - 1][i] == '_'){
-        action_retirer = 0;
-        printf("Vous ne pouvez pas retirer un jeton dans cette colonne. Erreur colonne : %d\n", positionjeton);
-    }
-
-    return action_retirer;
-}
-
-void tour(int joueur1or2, char grillepuissanceN[50][50], grid grille) {
-
-    int colonne_bloquee = grille.largeur + 1; //la colonne bloquee n'as aucun impacte sur la grille de jeu
-    int vainqueur = 0;
-    int dernierjeton_xy[2];                   //tableau avec la position du dernier jeton posé, ex {1,5}
-    // donc le jeton est posé en x=1 et y=5 dans le tableau
-
-    if (joueur1or2 == 1) {
-
-        do {
-            printf("Le joueur 1 commence...\n");
-            vainqueur = tour_joueur1(grille, grillepuissanceN, &colonne_bloquee, dernierjeton_xy);
-            if(vainqueur == 0) {
-                printf("C'est au tour du joueur 2...\n");
-                vainqueur = tour_joueur2(grille, grillepuissanceN, &colonne_bloquee, dernierjeton_xy);
-            }
-        } while (vainqueur == 0);
-    } else if (joueur1or2 == 2) {
-        do {
-            printf("Le joueur 2 commence...\n");
-            vainqueur = tour_joueur2(grille, grillepuissanceN, &colonne_bloquee, dernierjeton_xy);
-            if(vainqueur == 0) {
-                printf("C'est au tour du joueur 1...\n");
-                vainqueur = tour_joueur1(grille, grillepuissanceN, &colonne_bloquee, dernierjeton_xy);
-            }
-        } while (vainqueur == 0);
-
+    if (i == grille.largeur)
+    {
+        return 0; //si pas de jetons dans la grille, on retourne 0
+    } else {
+        return 1; // si jetons dans la grille, on retourne 1
     }
 }
 
-int tour_joueur1(grid grille, char grillepuissanceN[50][50], int *colonne_bloquee, int dernierjeton_xy[2]) {
+void menu(int *NB_joueur, int *charger_partie)
+{
+    int partiesauvegarder_existe; // ==1 --> on propose de charger une partie car elle existe
+    // == 2 --> on ne propose pas car aucune partie sauvegardée
+    partiesauvegarder_existe = verif_partiesauvegarde("projet.txt", &NB_joueur);
 
-    int joueur1or2 = 1;
-    char symbole = 'X';
-    int vainqueur = 0;
-    int action_effectuer = 1;   //action_effectuer = 1 --> la boucle ne se répète pas
-    //action_effectuer = 0 --> la boucle se répète
-    int choix = 0;   //choix = 1 --> positionner jeton
-    //choix = 2 --> retirer jeton
-    //choix = 3 --> sauvegarder et quitter la partie
-
-    do {
+    if (partiesauvegarder_existe == 1) {
         do {
-            printf("\n Rentrer 1 si vous voulez positionner un jeton,"
-                   "\n Rentrer 2 si vous voulez retirer un jeton"
-                   "\n Rentrer 3 si vous voulez sauvegarder la partie et la quitter\n");
-            scanf("%d", &choix);
-        } while(choix < 1 || choix > 3);
-
-        if (choix == 1) {
-            action_effectuer = positionner_jeton(grille, grillepuissanceN, symbole, colonne_bloquee, dernierjeton_xy);
-            afficher_grille(grille, grillepuissanceN);
-        } else if (choix == 2) {
-            action_effectuer = retirer_jeton(grille, grillepuissanceN, symbole, colonne_bloquee);
-            afficher_grille(grille, grillepuissanceN);
-            return 0;
-        } else if (choix == 3) {
-            action_effectuer = 1;
-            save(joueur1or2, *colonne_bloquee, grille, grillepuissanceN, "projet.txt");
-            return 3;//sauvegarder et quitter la partie (fonction)
-        }
-    } while (action_effectuer == 0);
-
-    vainqueur = checkwinner(grille, grillepuissanceN, symbole, dernierjeton_xy);
-    return vainqueur;
+            printf("Demarrer une nouvelle partie (0)\n"
+                   "Charger une partie (1)\n"
+                   "Quitter (2)\n");
+            fflush(stdin);
+            scanf("%d", &*charger_partie);
+        } while (*charger_partie != 0 && *charger_partie != 1 && *charger_partie != 2);
+    } else {
+        do {
+            printf("Demarrer une nouvelle partie (0)\n"
+                   "Quitter (2)\n");
+            fflush(stdin);
+            scanf("%d", &*charger_partie);
+        } while (*charger_partie != 0 && *charger_partie != 2);
+    }
+    if(*charger_partie == 0) {
+        do {
+            printf("Voulez-vous jouer seul ou a deux ?\n");
+            *NB_joueur = scan_valeur(*NB_joueur);   //remplace scanf pour pouvoir empêcher la saisie de caractère
+            //scanf("%d", &*NB_joueur);
+        }  while (*NB_joueur != 1 && *NB_joueur != 2);
+    } else if (*charger_partie == 2)
+    {
+        *NB_joueur = 0;
+    }
 }
 
-int tour_joueur2(grid grille, char grillepuissanceN[50][50], int *colonne_bloquee, int dernierjeton_xy[2]) {
+int scan_valeur(int valeur)
+{
+    char chaine[100];
 
-    int joueur1or2 = 2;
-    char symbole = 'O';
-    int vainqueur = 0;
-    int action_effectuer = 1;   //action_effectuer = 1 --> la boucle ne se répète pas
-    // action_effectuer = 2 --> la boucle se répète
-    int choix = 0;   //choix = 1 --> positionner jeton
-    //choix = 2 --> retirer jeton
-    //choix = 3 --> sauvegarder et quitter la partie
+    fflush(stdin);
+    gets(chaine);
+    valeur = atoi(chaine);
 
-    do {
-        do {
-            printf("\n Rentrer 1 si vous voulez positionner un jeton,"
-                   "\n Rentrer 2 si vous voulez retirer un jeton"
-                   "\n Rentrer 3 si vous voulez sauvegarder la partie et la quitter\n");
-            scanf("%d", &choix);
-        } while(choix < 1 || choix > 3);
-
-        if (choix == 1) {
-            action_effectuer = positionner_jeton(grille, grillepuissanceN, symbole, colonne_bloquee, dernierjeton_xy);
-            afficher_grille(grille, grillepuissanceN);
-        } else if (choix == 2) {
-            action_effectuer = retirer_jeton(grille, grillepuissanceN, symbole, colonne_bloquee);
-            afficher_grille(grille, grillepuissanceN);
-        } else if (choix == 3) {
-            action_effectuer = 1;
-            save(joueur1or2, *colonne_bloquee, grille, grillepuissanceN, "projet.txt");
-            return 3;//sauvegarder et quitter la partie (fonction)
-        }
-    } while (action_effectuer == 0);
-
-    vainqueur = checkwinner(grille, grillepuissanceN, symbole, dernierjeton_xy);
-    return vainqueur;     //retourne 0 si pas de gagnants
-    // 1 si gagnant
-    //-1 si égalité
-}
-
-int tour_ordi(grid grille, char grillepuissanceN[50][50], int *colonne_bloquee, int dernierjeton_xy[2]) {
-
-    char symbole = 'X';
-    int vainqueur = 0;
-    int action_effectuer = 1;   //action_effectuer = 1 --> la boucle ne se répète pas
-    //action_effectuer = 0 --> la boucle se répète
-    int choix = 0;   //choix = 1 --> positionner jeton
-    //choix = 2 --> retirer jeton
-    //choix = 3 --> sauvegarder et quitter la partie
-
-    do {
-        choix = rand() % 5 ;
-        if (choix >= 0 && choix < 3) {
-            action_effectuer = positionner_jeton(grille, grillepuissanceN, symbole, colonne_bloquee, dernierjeton_xy);
-            afficher_grille(grille, grillepuissanceN);
-        } else if (choix == 4) {
-            action_effectuer = retirer_jeton(grille, grillepuissanceN, symbole, colonne_bloquee);
-            afficher_grille(grille, grillepuissanceN);
-        }
-    } while (action_effectuer == 0);
-
-    vainqueur = checkwinner(grille, grillepuissanceN, symbole, dernierjeton_xy);
-    return vainqueur;
+    if (valeur == 0)
+    {
+        printf("Merci de saisir une saisie valable.\n");
+    }
+    return valeur;
 }

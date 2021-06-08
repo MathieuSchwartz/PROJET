@@ -1,5 +1,5 @@
 //
-// Created by mathi on 30/05/2021.
+// Created by Elève on 25/05/2021.
 //
 
 #ifndef PROJET_BASE_H
@@ -26,25 +26,12 @@ void initialisation_grille(grid grille, char grillepuissanceN[50][50]);  //secti
  */
 void afficher_grille(grid grille, char grillepuissanceN[50][50]);        //section 1
 
-/*
- * Permet de positionner le jeton en prenant en paramètre le symbole du joueur
- */
-int positionner_jeton(grid grille, char grillepuissanceN[50][50], char symbole, int * colonne_bloquee, int dernierjeton_xy[2]);  //section2
+int choixjoueur(int joueur1or2);
 
-/*
- * Permet de retirer le jeton en prenant en paramètre le symbole du joueur
- */
-int retirer_jeton(grid grille, char grillepuissanceN[50][50], char symbole, int * colonne_bloquee);     //section2
+int jetonsdanslagrille(grid grille, char grillepuissanceN[50][50]);
 
+void menu(int *NB_joueur, int *charger_partie);
 
-int tour_joueur2(grid grille, char grillepuissanceN[50][50],int * colonne_bloquee, int dernierjeton_xy[2]);
-
-int tour_joueur1(grid grille, char grillepuissanceN[50][50], int * colonne_bloquee, int dernierjeton_xy[2]);
-
-int tour_ordi(grid grille, char grillepuissanceN[50][50], int * colonne_bloquee, int dernierjeton_xy[2]);
-
-void tour(int joueur1or2, char grillepuissanceN[50][50], grid grille);
-
-int menu();
+int scan_valeur(int valeur);
 
 #endif //PROJET_BASE_H
